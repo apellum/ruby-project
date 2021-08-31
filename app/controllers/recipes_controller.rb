@@ -1,8 +1,10 @@
+require 'pry'
 class RecipesController < ApplicationController
 
     get "/recipes" do
         recipe = Recipe.all
         recipe.to_json( include: [:users])
+        binding.pry
     end
 
     get "/recipes/:id" do
