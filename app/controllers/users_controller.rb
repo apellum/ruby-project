@@ -3,10 +3,15 @@ class UsersController < ApplicationController
         users = User.all
         users.to_json
     end
+# look at this one
+    get "/users/:username" do
+        user = User.find_by_username(params[:username])
+        user.to_json
+    end
 
-    get "/users/:id/recipes" do
-        user_finder
-        @user.to_json
+    get "/users/:username/recipes" do
+        user = User.find_by_username(params[:username])
+        user.to_json(include: [:recipes])
     end
     
     post "/users" do
@@ -14,20 +19,8 @@ class UsersController < ApplicationController
         user.to_json
     end
 
-    patch "/users/:id" do
-        user_finder
-        @user.update(params)
-        @user/to_json
-    end
-
-    delete "/users/:id" do
-        user_finder
-        @user.destroy
-        @user.to_json
-    end
-
     private
     def user_finder
-        @user = User.find_by_id(params[:id])
+        @user = User.find_by_username(params[:username])
     end
 end

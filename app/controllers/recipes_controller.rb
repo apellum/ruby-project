@@ -1,34 +1,29 @@
+require 'pry'
 class RecipesController < ApplicationController
 
     get "/recipes" do
-        recipe = Recipe.all
-        recipe.to_json( include: [:users])
+        recipes = Recipe.all
+        recipes.to_json
     end
 
-    get "/recipes/:id" do
+    get "/recipes/:username" do
         recipe_finder
         @recipe.to_json
     end
 
     post "/recipes" do
-        recipe = Recipe.create(params)
-        recipe.to_json
-    end
-
-    patch "/recipes/:id" do
-        recipe_finder
-        @recipe.update(params)
-        @recipe.to_json
+        recipes = Recipe.create(params)
+        recipes.to_json
     end
 
     delete "/recipes/:id" do
-        recipe_finder
-        @recipe.destroy
-        @recipe.to_json
+        recipe = Recipe.find_by_id(params[:id])
+        recipe.destroy
+        @ecipe.to_json
     end
 
     private
         def recipe_finder
-            @recipe = Recipe.find_by_id(params[:id])
+            @recipe = Recipe.find_by_username(params[:username])
         end
 end
